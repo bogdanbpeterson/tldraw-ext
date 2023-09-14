@@ -15,7 +15,26 @@
     "tldraw"
   ],
   "author": "Bogdan B Peterson <github@bogdanbpeterson.com>",
+  "scripts": {
+    "build": "node ./scripts/build.mjs",
+    "dev": ""
+  },
+  "dependencies": {
+    "@tldraw/tldraw": "alpha",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
   "devDependencies": {
+    "@extpkg/types-console": "^1.0.1",
+    "@extpkg/types-runtime": "^1.1.0",
+    "@extpkg/types-tabs": "^1.1.0",
+    "@extpkg/types-websessions": "^1.0.1",
+    "@extpkg/types-webviews": "^1.0.2",
+    "@extpkg/types-windows": "^1.1.0",
+    "@types/node": "^20.6.0",
+    "@types/react": "^18.2.21",
+    "@types/react-dom": "^18.2.7",
+    "esbuild": "^0.19.3",
     "typescript": "^5.2.2"
   }
 }
