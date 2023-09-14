@@ -16,8 +16,8 @@
   ],
   "author": "Bogdan B Peterson <github@bogdanbpeterson.com>",
   "scripts": {
-    "build": "node ./scripts/build.mjs",
-    "dev": ""
+    "build": "NODE_ENV=production node ./scripts/build.mjs",
+    "dev": "NODE_ENV=development node ./scripts/dev.mjs"
   },
   "dependencies": {
     "@tldraw/tldraw": "alpha",

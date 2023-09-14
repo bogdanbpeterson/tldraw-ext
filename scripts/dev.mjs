@@ -5,6 +5,7 @@ import { cp, readFileSync, rm } from "fs";
 import { dirname } from "path";
 import typescript from "typescript";
 
+console.log(process.env["NODE_ENV"]);
 const mode = process.env["NODE_ENV"] ?? "development";
 const isDev = mode === "development";
 
