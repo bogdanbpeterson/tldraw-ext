@@ -14,5 +14,8 @@
     "ext",
     "tldraw"
   ],
-  "author": "Bogdan B Peterson <github@bogdanbpeterson.com>"
+  "author": "Bogdan B Peterson <github@bogdanbpeterson.com>",
+  "devDependencies": {
+    "typescript": "^5.2.2"
+  }
 }

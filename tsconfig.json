@@ -1,0 +1,36 @@
+{
+  "compilerOptions": {
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "skipLibCheck": true,
+    "target": "es2022",
+    "verbatimModuleSyntax": true,
+    "resolveJsonModule": true,
+    "moduleDetection": "force",
+    "strict": true,
+    "noUncheckedIndexedAccess": true,
+    "isolatedModules": true,
+    "moduleResolution": "bundler",
+    "module": "esnext",
+    "noEmit": true,
+    "lib": [
+      "es2022",
+      "dom"
+    ],
+    "jsx": "react-jsx",
+    "types": [
+      "@extpkg/types-console",
+      "@extpkg/types-runtime",
+      "@extpkg/types-tabs",
+      "@extpkg/types-websessions",
+      "@extpkg/types-webviews",
+      "@extpkg/types-windows"
+    ]
+  },
+  "include": [
+    "src"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
+}
