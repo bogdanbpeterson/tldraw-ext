@@ -17,7 +17,7 @@
   "author": "Bogdan B Peterson <github@bogdanbpeterson.com>",
   "scripts": {
     "build": "NODE_ENV=production node ./scripts/build.mjs",
-    "dev": "NODE_ENV=development node ./scripts/dev.mjs"
+    "dev": "nodemon"
   },
   "dependencies": {
     "@tldraw/tldraw": "alpha",
@@ -35,6 +35,7 @@
     "@types/react": "^18.2.21",
     "@types/react-dom": "^18.2.7",
     "esbuild": "^0.19.3",
+    "nodemon": "^3.0.1",
     "typescript": "^5.2.2"
   }
 }
