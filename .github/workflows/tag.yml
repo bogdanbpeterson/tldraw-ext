@@ -32,7 +32,9 @@ jobs:
       - name: Create new tag
         if: env.TAG_EXISTS == 'false'
         run: |
-          git config --global user.name 'Bogdan B Peterson'
-          git config --global user.email 'github@bogdanbpeterson.com'
+          git config --global user.name '${{ secrets.GH_USER_NAME }}'
+          git config --global user.email '${{ secrets.GH_USER_EMAIL }}'
           git tag v${{ env.VERSION }}
           git push origin v${{ env.VERSION }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
