@@ -45,6 +45,7 @@ jobs:
         id: create_release
         uses: ncipollo/release-action@v1
         with:
+          tag: ${{ steps.get_tag.outputs.tag }}
           name: TLDraw EXT ${{ steps.get_tag.outputs.tag }}
           artifacts: "tldraw-ext-${{ steps.get_tag.outputs.tag }}.zip"
           artifactContentType: "application/zip"
