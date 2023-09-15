@@ -30,7 +30,7 @@ jobs:
         with:
           title: Release ${{ github.ref_name }}
         env:
-          GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Upload Release Asset
         uses: softprops/action-gh-release@v1
