@@ -32,11 +32,11 @@ jobs:
       - name: Get the tag name
         id: get_tag
         run: |
-          PKG_VERSION="$(jq -r '.version' package.json)"
+          PKG_VERSION="v$(jq -r '.version' package.json)"
           # echo "tag=v$(${{ github.ref_name }} || $PKG_VERSION)" >> $GITHUB_OUTPUT
-          echo "v$(${{ github.ref_name }})"
-          echo "v$($PKG_VERSION)"
-          echo "v$(${{ github.ref_name }} || $PKG_VERSION)"
+          echo "${{ github.ref_name }}"
+          echo "$PKG_VERSION"
+          echo "${${{ github.ref_name }}:-$PKG_VERSION}"
 
           # if [[ ${{ github.ref }} == "refs/tag/*" ]]; then
           #   echo "tag=v${{ github.ref_name }}" >> $GITHUB_OUTPUT
