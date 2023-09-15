@@ -16,3 +16,6 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: bogdanbpeterson/action-tag-npm@master
+      # - name: Create a release
+      #   run: |
+      #     gh workflow run release.yml
