@@ -68,4 +68,6 @@ jobs:
           artifactContentType: "application/zip"
           prerelease: false
           allowUpdates: true
+          replacesArtifacts: true
           body: "This is the ${{ steps.get_tag.outputs.override }} release of ${{ github.repository }}"
+          makeLatest: ${{ !(contains(steps.get_tag.outputs.tag, 'alpha') || contains(steps.get_tag.outputs.tag, 'beta')) }}
