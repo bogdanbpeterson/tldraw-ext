@@ -13,7 +13,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-      - uses: action-tag-npm@v1
+      - uses: bogdanbpeterson/action-tag-npm
         with:
           git-user-email: "github@bogdanbpeterson.com"
           git-user-name: "Bogdan B Peterson"
