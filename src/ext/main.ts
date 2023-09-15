@@ -27,7 +27,7 @@ ext.runtime.onExtensionClick.addListener(async () => {
     darkMode,
     fullscreenable: true,
     title: `TLDraw - #${availableSpot + 1}`,
-    frame: false,
+    // frame: false,
   });
   const windowSize = await ext.windows.getBounds(window.id);
   const websession = await ext.websessions.create({
@@ -44,7 +44,7 @@ ext.runtime.onExtensionClick.addListener(async () => {
       x: 0,
       y: 0,
       width: windowSize.width,
-      height: windowSize.height,
+      height: windowSize.height - 28,
     },
   });
 
