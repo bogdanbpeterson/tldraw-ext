@@ -4,10 +4,12 @@ on:
   push:
     tags:
       - "v[0-9]+.[0-9]+.[0-9]+*"
+    branches:
+      - main
+    paths:
+      - package.json
+
   workflow_dispatch:
-  workflow_run:
-    workflows: ["Create Version Tag"]
-    types: completed
 
 jobs:
   build:
@@ -30,21 +32,25 @@ jobs:
       - name: Get the tag name
         id: get_tag
         run: |
-          if [[ ${{ github.ref_name }} ]]; then
-            VERSION="$(cat package.json | jq -r '.version')"
-            if [[ $VERSION == *"alpha"* ]]; then
-              echo "alpha"
-              echo "tag=alpha" >> $GITHUB_OUTPUT
-            elif [[ $VERSION == *"beta"* ]]; then
-              echo "beta"
-              echo "tag=beta" >> $GITHUB_OUTPUT
-            else
-              echo "latest"
-              echo "tag=latest" >> $GITHUB_OUTPUT
-            fi
-          else
-            echo "tag=$(git describe --tags --abbrev=0)" >> $GITHUB_OUTPUT 
-          fi
+          PKG_VERSION="$(jq -r '.version' package.json)"
+          # echo "tag=v$(${{ github.ref_name }} || $PKG_VERSION)" >> $GITHUB_OUTPUT
+          echo "v$(${{ github.ref_name }})"
+          echo "v$($PKG_VERSION)"
+          echo "v$(${{ github.ref_name }} || $PKG_VERSION)"
+
+          # if [[ ${{ github.ref }} == "refs/tag/*" ]]; then
+          #   echo "tag=v${{ github.ref_name }}" >> $GITHUB_OUTPUT
+          # else
+          #   echo "tag=v$PKG_VERSION" >> $GITHUB_OUTPUT
+
+          #   if [[ $VERSION == *"alpha"* ]]; then
+          #     echo "update=alpha" >> $GITHUB_OUTPUT
+          #   elif [[ $VERSION == *"beta"* ]]; then
+          #     echo "update=beta" >> $GITHUB_OUTPUT
+          #   else
+          #     echo "update=latest" >> $GITHUB_OUTPUT
+          #   fi
+          # fi
 
       - name: Create ZIP archive from dist
         run: |
