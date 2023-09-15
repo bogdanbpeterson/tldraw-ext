@@ -66,3 +66,4 @@ jobs:
           artifacts: "tldraw-ext-${{ steps.get_tag.outputs.tag }}.zip"
           artifactContentType: "application/zip"
           prerelease: false
+          allowUpdates: true
