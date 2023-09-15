@@ -2,8 +2,6 @@ name: Create Release and Upload ZIP
 
 on:
   push:
-    tags:
-      - "v[0-9]+.[0-9]+.[0-9]+*"
     branches:
       - main
     paths:
@@ -32,39 +30,39 @@ jobs:
       - name: Get the tag name
         id: get_tag
         run: |
-          REF_VERSION=${{ github.ref_name }}
           PKG_VERSION="v$(jq -r '.version' package.json)"
-          # echo "tag=v$(${{ github.ref_name }} || $PKG_VERSION)" >> $GITHUB_OUTPUT
-          echo $REF_VERSION
-          echo $PKG_VERSION
-          echo "${$REF_VERSION:-$PKG_VERSION}"
+          echo "tag=$PKG_VERSION" >> $GITHUB_OUTPUT
 
-          # if [[ ${{ github.ref }} == "refs/tag/*" ]]; then
-          #   echo "tag=v${{ github.ref_name }}" >> $GITHUB_OUTPUT
-          # else
-          #   echo "tag=v$PKG_VERSION" >> $GITHUB_OUTPUT
-
-          #   if [[ $VERSION == *"alpha"* ]]; then
-          #     echo "update=alpha" >> $GITHUB_OUTPUT
-          #   elif [[ $VERSION == *"beta"* ]]; then
-          #     echo "update=beta" >> $GITHUB_OUTPUT
-          #   else
-          #     echo "update=latest" >> $GITHUB_OUTPUT
-          #   fi
-          # fi
+          if [[ $PKG_VERSION == *"alpha"* ]]; then
+            echo "override=alpha" >> $GITHUB_OUTPUT
+          elif [[ $PKG_VERSION == *"beta"* ]]; then
+            echo "override=beta" >> $GITHUB_OUTPUT
+          else
+            echo "override=latest" >> $GITHUB_OUTPUT  
+          fi
 
       - name: Create ZIP archive from dist
         run: |
-          echo ${{ steps.get_tag.outputs.tag }}
           cd dist
           zip -r ../tldraw-ext-${{ steps.get_tag.outputs.tag }}.zip .
 
-      - name: Create Release
-        id: create_release
+      - name: Create Prelease
+        if: ${{ contains(steps.get_tag.outputs.tag, 'alpha') || contains(steps.get_tag.outputs.tag, 'beta') }}
+        id: create_prerelease
         uses: ncipollo/release-action@v1
         with:
           tag: ${{ steps.get_tag.outputs.tag }}
           name: TLDraw EXT ${{ steps.get_tag.outputs.tag }}
           artifacts: "tldraw-ext-${{ steps.get_tag.outputs.tag }}.zip"
           artifactContentType: "application/zip"
-          prerelease: ${{ contains(steps.get_tag.outputs.tag, 'alpha') || contains(steps.get_tag.outputs.tag, 'beta') }}
+          prerelease: true
+
+      - name: Create Release
+        id: create_release
+        uses: ncipollo/release-action@v1
+        with:
+          tag: ${{ steps.get_tag.outputs.override }}
+          name: TLDraw EXT ${{ steps.get_tag.outputs.override }}
+          artifacts: "tldraw-ext-${{ steps.get_tag.outputs.tag }}.zip"
+          artifactContentType: "application/zip"
+          prerelease: false
