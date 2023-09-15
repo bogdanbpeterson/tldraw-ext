@@ -4,6 +4,8 @@ on:
   push:
     branches:
       - main
+    paths:
+      - package.json
 
 jobs:
   tag:
@@ -11,28 +13,4 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-
-      - uses: actions/setup-node@v3
-        with:
-          node-version: "lts/*"
-
-      - name: Get version from package.json
-        run: echo "VERSION=$(jq -r .version package.json)" >> $GITHUB_ENV
-
-      - name: Check if tag exists
-        id: check_tag
-        run: |
-          TAG_EXISTS=$(git tag -l "v${{ env.VERSION }}")
-          if [[ "$TAG_EXISTS" ]]; then
-            echo "TAG_EXISTS=true" >> $GITHUB_ENV
-          else
-            echo "TAG_EXISTS=false" >> $GITHUB_ENV
-          fi
-
-      - name: Create new tag
-        if: env.TAG_EXISTS == 'false'
-        run: |
-          git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git config --local user.name "github-actions[bot]"
-          git tag v${{ env.VERSION }}
-          git push origin v${{ env.VERSION }}
+      - uses: neverendingqs/gh-action-tag-on-npm-version@master
