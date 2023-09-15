@@ -1,6 +1,6 @@
 {
   "name": "tldraw-ext",
-  "version": "0.0.1-alpha1",
+  "version": "0.0.1-alpha2",
   "description": "An EXT based tldraw experience",
   "repository": {
     "type": "git",
