@@ -30,14 +30,17 @@ jobs:
       - name: Get the tag name
         id: get_tag
         run: |
-          if [[ $GITHUB_REF == refs/tags/* ]]; then
-            echo "::set-output name=tag::${GITHUB_REF#refs/tags/}"
+          echo ${{ github.ref_name }}
+
+          if [[ ${{ github.ref_name }} ]]; then
+            echo "tag=${{ github.ref_name }}" >> $GITHUB_OUTPUT
           else
-            echo "::set-output name=tag::$(git describe --tags --abbrev=0)"
+            echo "tag=$(git describe --tags --abbrev=0)" >> $GITHUB_OUTPUT 
           fi
 
       - name: Create ZIP archive from dist
         run: |
+          echo ${{ steps.get_tag.outputs.tag }}
           cd dist
           zip -r ../tldraw-ext-${{ steps.get_tag.outputs.tag }}.zip .
 
