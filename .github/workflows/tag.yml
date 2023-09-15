@@ -15,5 +15,5 @@ jobs:
       - uses: actions/checkout@v4
       - uses: neverendingqs/gh-action-tag-on-npm-version@master
         with:
-          git-user-email: github@bogdanbpeterson.com
-          git-user-name: Bogdan B Peterson
+          git-user-email: "github@bogdanbpeterson.com"
+          git-user-name: "Bogdan B Peterson"
