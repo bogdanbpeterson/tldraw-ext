@@ -45,6 +45,8 @@ jobs:
         run: |
           cd dist
           zip -r ../tldraw-ext-${{ steps.get_tag.outputs.tag }}.zip .
+          cd ..
+          cp tldraw-ext-${{ steps.get_tag.outputs.tag }}.zip tldraw-ext-${{ steps.get_tag.outputs.override }}.zip
 
       - name: Create Prelease
         if: ${{ contains(steps.get_tag.outputs.tag, 'alpha') || contains(steps.get_tag.outputs.tag, 'beta') }}
@@ -63,7 +65,8 @@ jobs:
         with:
           tag: ${{ steps.get_tag.outputs.override }}
           name: TLDraw EXT ${{ steps.get_tag.outputs.override }}
-          artifacts: "tldraw-ext-${{ steps.get_tag.outputs.tag }}.zip"
+          artifacts: "tldraw-ext-${{ steps.get_tag.outputs.override }}.zip"
           artifactContentType: "application/zip"
           prerelease: false
           allowUpdates: true
+          body: "This is the ${{ steps.get_tag.outputs.override }} release of ${{ github.repository }}"
