@@ -48,8 +48,7 @@ jobs:
           cd ..
           cp tldraw-ext-${{ steps.get_tag.outputs.tag }}.zip tldraw-ext-${{ steps.get_tag.outputs.override }}.zip
 
-      - name: Create Prelease
-        if: ${{ contains(steps.get_tag.outputs.tag, 'alpha') || contains(steps.get_tag.outputs.tag, 'beta') }}
+      - name: Create versioned release
         id: create_prerelease
         uses: ncipollo/release-action@v1
         with:
@@ -57,9 +56,9 @@ jobs:
           name: TLDraw EXT ${{ steps.get_tag.outputs.tag }}
           artifacts: "tldraw-ext-${{ steps.get_tag.outputs.tag }}.zip"
           artifactContentType: "application/zip"
-          prerelease: true
+          prerelease: ${{ contains(steps.get_tag.outputs.tag, 'alpha') || contains(steps.get_tag.outputs.tag, 'beta') }}
 
-      - name: Create Release
+      - name: Create release
         id: create_release
         uses: ncipollo/release-action@v1
         with:
