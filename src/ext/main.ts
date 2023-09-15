@@ -15,14 +15,20 @@ const findFirstEmptySpot = (array: (any | null)[]) => {
 
 ext.runtime.onExtensionClick.addListener(async () => {
   const availableSpot = findFirstEmptySpot(instances);
-
+  const darkMode = await ext.windows.getPlatformDarkMode();
   const tab = await ext.tabs.create({
     index: availableSpot,
     text: `TLDraw - #${availableSpot + 1}`,
     icon: "./assets/128.png",
     icon_dark: "./assets/128-dark.png",
   });
-  const window = await ext.windows.create();
+  const window = await ext.windows.create({
+    center: true,
+    darkMode,
+    fullscreenable: true,
+    title: `TLDraw - #${availableSpot + 1}`,
+    frame: false,
+  });
   const windowSize = await ext.windows.getBounds(window.id);
   const websession = await ext.websessions.create({
     partition: `TLDraw - #${availableSpot + 1}`,
@@ -42,8 +48,17 @@ ext.runtime.onExtensionClick.addListener(async () => {
     },
   });
 
+  const { y: paddingTop } = await ext.webviews.getBounds(webview.id);
+
+  await ext.webviews.setBounds(webview.id, {
+    x: 0,
+    y: paddingTop,
+    width: windowSize.width,
+    height: windowSize.height - paddingTop,
+  });
+
   await ext.webviews.loadFile(webview.id, "index.html");
-  await ext.webviews.openDevTools(webview.id, { mode: "undocked" });
+  // await ext.webviews.openDevTools(webview.id, { mode: "undocked" });
   console.log("is dark", await ext.windows.getPlatformDarkMode());
   const instance: Instance = {
     tabId: tab.id,

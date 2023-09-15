@@ -87,6 +87,9 @@ const buildApp = async () => {
     minify: !isDev,
     format: "esm",
     target: "chrome100",
+    loader: {
+      ".woff2": "file",
+    },
   });
 };
 

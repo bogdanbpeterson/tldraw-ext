@@ -1,11 +1,14 @@
 import { Tldraw } from "@tldraw/tldraw";
+import { getAssetUrls } from "@tldraw/assets/selfHosted";
 import "@tldraw/tldraw/tldraw.css";
 
 function App() {
-  console.log("body size", document.body.getBoundingClientRect());
   return (
-    <div style={{ position: "fixed", inset: 0 }}>
-      <Tldraw persistenceKey={"tldraw-key"} />
+    <div className="tldraw">
+      <Tldraw
+        persistenceKey={"tldraw-key"}
+        assetUrls={getAssetUrls((url) => url)}
+      />
     </div>
   );
 }
