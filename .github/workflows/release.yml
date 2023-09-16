@@ -1,7 +1,6 @@
 name: Create Release and Upload ZIP
 
 on:
-  workflow_call:
   push:
     branches:
       - main
