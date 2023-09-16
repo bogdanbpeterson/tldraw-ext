@@ -58,7 +58,12 @@ jobs:
           artifactContentType: "application/zip"
           prerelease: ${{ contains(steps.get_tag.outputs.tag, 'alpha') || contains(steps.get_tag.outputs.tag, 'beta') }}
 
-        # make it delete and recreate it
+      - name: Delete current release
+        run: |
+          gh release delete ${{ steps.get_tag.outputs.override }} -y
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Create release
         id: create_release
         uses: ncipollo/release-action@v1
