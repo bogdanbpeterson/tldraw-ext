@@ -1,6 +1,8 @@
 type Instance = {
   tabId: string;
   windowId: string;
+  webviewId: string;
+  websessionId: string;
 };
 
 const findFirstEmptySpot = (array: (any | null)[]) => {
@@ -16,6 +18,17 @@ class InstancesManager {
 
   private creationLocked = false;
 
+  private findInstance({ tabId, windowId }: Partial<Instance>) {
+    const instanceIndex = this.instances.findIndex(
+      (instance) =>
+        (tabId && instance?.tabId === tabId) ||
+        (windowId && instance?.windowId === windowId),
+    );
+    const instance = this.instances[instanceIndex];
+
+    return { instance, instanceIndex };
+  }
+
   async create() {
     // Prevents creating duplicating instances
     if (this.creationLocked) return;
@@ -23,7 +36,6 @@ class InstancesManager {
     this.creationLocked = true;
 
     const availableSpot = findFirstEmptySpot(this.instances);
-    const darkMode = await ext.windows.getPlatformDarkMode();
     const tab = await ext.tabs.create({
       index: availableSpot,
       text: `TLDraw - #${availableSpot + 1}`,
@@ -32,10 +44,12 @@ class InstancesManager {
     });
     const window = await ext.windows.create({
       center: true,
-      darkMode,
+      darkMode: "platform",
       fullscreenable: true,
       title: `TLDraw - #${availableSpot + 1}`,
-      // frame: false,
+      icon: "./assets/128.dark",
+      frame: false,
+      titleBarStyle: "inset",
     });
     const windowSize = await ext.windows.getBounds(window.id);
     const websession = await ext.websessions.create({
@@ -48,23 +62,7 @@ class InstancesManager {
       window,
       websession,
       autoResize: { horizontal: true, vertical: true },
-      bounds: {
-        x: 0,
-        y: 0,
-        width: windowSize.width,
-        height: windowSize.height - 28,
-      },
-    });
-
-    const { y: frameHeight } = await ext.webviews.getBounds(webview.id);
-
-    console.log(frameHeight);
-
-    await ext.webviews.setBounds(webview.id, {
-      x: 0,
-      y: 0,
-      width: windowSize.width,
-      height: windowSize.height - frameHeight,
+      bounds: { ...windowSize, x: 0, y: 0 },
     });
 
     await ext.webviews.loadFile(webview.id, "index.html");
@@ -73,6 +71,8 @@ class InstancesManager {
     const instance: Instance = {
       tabId: tab.id,
       windowId: window.id,
+      websessionId: websession.id,
+      webviewId: webview.id,
     };
 
     this.instances[availableSpot] = instance;
@@ -81,24 +81,19 @@ class InstancesManager {
   }
 
   async destroy({ tabId, windowId }: { tabId?: string; windowId?: string }) {
-    const instanceIndex = this.instances.findIndex(
-      (instance) =>
-        (tabId && instance?.tabId === tabId) ||
-        (windowId && instance?.windowId === windowId),
-    );
-    const instance = this.instances[instanceIndex];
+    const { instance, instanceIndex } = this.findInstance({ tabId, windowId });
 
     if (instance) {
       await ext.windows.remove(instance.windowId);
       await ext.tabs.remove(instance.tabId);
+      await ext.webviews.remove(instance.webviewId);
+      await ext.websessions.remove(instance.websessionId);
       this.instances[instanceIndex] = null;
     }
   }
 
   async focusWindow({ tabId }: { tabId: string }) {
-    const instance = this.instances.find(
-      (instance) => instance?.tabId === tabId,
-    );
+    const { instance } = this.findInstance({ tabId });
 
     if (instance) {
       await ext.windows.restore(instance.windowId);

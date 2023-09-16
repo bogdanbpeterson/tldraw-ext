@@ -19,12 +19,6 @@
     U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
 
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
-}
-
 body {
   padding: 0;
   margin: 0;
