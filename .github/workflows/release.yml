@@ -48,6 +48,12 @@ jobs:
           cd ..
           cp tldraw-ext-${{ steps.get_tag.outputs.tag }}.zip tldraw-ext-${{ steps.get_tag.outputs.override }}.zip
 
+      - name: Delete current release
+        run: |
+          gh release delete ${{ steps.get_tag.outputs.override }} --cleanup-tag -y
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Create versioned release
         id: create_prerelease
         uses: ncipollo/release-action@v1
@@ -56,13 +62,9 @@ jobs:
           name: TLDraw EXT ${{ steps.get_tag.outputs.tag }}
           artifacts: "tldraw-ext-${{ steps.get_tag.outputs.tag }}.zip"
           artifactContentType: "application/zip"
+          body: "This is the ${{ steps.get_tag.outputs.tag }} release of ${{ github.repository }}"
           prerelease: ${{ contains(steps.get_tag.outputs.tag, 'alpha') || contains(steps.get_tag.outputs.tag, 'beta') }}
-
-      - name: Delete current release
-        run: |
-          gh release delete ${{ steps.get_tag.outputs.override }} --cleanup-tag -y
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          makeLatest: false
 
       - name: Create release
         id: create_release
@@ -72,7 +74,7 @@ jobs:
           name: TLDraw EXT ${{ steps.get_tag.outputs.override }}
           artifacts: "tldraw-ext-${{ steps.get_tag.outputs.override }}.zip"
           artifactContentType: "application/zip"
-          prerelease: false
+          prerelease: ${{ steps.get_tag.outputs.override == 'alpha' || steps.get_tag.outputs.override == 'beta'  }}
           draft: false
           body: "This is the ${{ steps.get_tag.outputs.override }} release of ${{ github.repository }}"
-          makeLatest: ${{ !(contains(steps.get_tag.outputs.tag, 'alpha') || contains(steps.get_tag.outputs.tag, 'beta')) }}
+          makeLatest: ${{ steps.get_tag.outputs.override == 'latest' }}
