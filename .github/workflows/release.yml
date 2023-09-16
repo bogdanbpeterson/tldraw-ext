@@ -58,6 +58,7 @@ jobs:
           artifactContentType: "application/zip"
           prerelease: ${{ contains(steps.get_tag.outputs.tag, 'alpha') || contains(steps.get_tag.outputs.tag, 'beta') }}
 
+        # make it delete and recreate it
       - name: Create release
         id: create_release
         uses: ncipollo/release-action@v1
