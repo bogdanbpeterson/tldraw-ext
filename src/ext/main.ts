@@ -73,7 +73,6 @@ class InstancesManager {
     });
 
     await ext.webviews.loadFile(webview.id, "index.html");
-    // await ext.webviews.openDevTools(webview.id, { mode: "undocked" });
 
     const instance: Instance = {
       tabId: tab.id,
