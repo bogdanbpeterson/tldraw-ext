@@ -60,7 +60,7 @@ jobs:
 
       - name: Delete current release
         run: |
-          gh release delete ${{ steps.get_tag.outputs.override }} -y
+          gh release delete ${{ steps.get_tag.outputs.override }} --cleanup-tag -y
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
