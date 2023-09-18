@@ -50,10 +50,8 @@ jobs:
 
       - name: Delete current release
         run: |
-          if [ $(git tag -l ${{ steps.get_tag.outputs.override }}) ]; then
-            gh release delete ${{ steps.get_tag.outputs.override }} --cleanup-tag -y
-          fi
-
+          gh release delete ${{ steps.get_tag.outputs.override }} --cleanup-tag -y
+        continue-on-error: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
