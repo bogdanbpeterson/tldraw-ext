@@ -1,6 +1,6 @@
 {
   "name": "tldraw-ext",
-  "version": "1.1.6",
+  "version": "1.1.7",
   "description": "An EXT based tldraw experience",
   "repository": {
     "type": "git",
@@ -27,7 +27,7 @@
   },
   "devDependencies": {
     "@extpkg/types-console": "^1.0.1",
-    "@extpkg/types-runtime": "^1.1.0",
+    "@extpkg/types-runtime": "^1.2.1",
     "@extpkg/types-tabs": "^1.1.0",
     "@extpkg/types-websessions": "^1.0.1",
     "@extpkg/types-webviews": "^1.0.2",

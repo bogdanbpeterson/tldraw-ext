@@ -20,6 +20,9 @@
     "timers": {},
     "windows": {},
     "webviews": {},
-    "websessions": {}
+    "websessions": {
+      "module_version": "1.0.1",
+      "permissions": ["*"]
+    }
   }
 }
