@@ -3,7 +3,7 @@ import {
   Tldraw /* , type TLUiMenuGroup */,
   type TLUiTranslationKey,
 } from "@tldraw/tldraw";
-import { getAssetUrls } from "@tldraw/assets/selfHosted";
+import { getAssetUrlsByMetaUrl } from "@tldraw/assets/urls";
 import "@tldraw/tldraw/tldraw.css";
 import { useEffect, useRef } from "react";
 
@@ -39,7 +39,7 @@ function App() {
     <div className="tldraw">
       <Tldraw
         persistenceKey={"tldraw-key"}
-        assetUrls={getAssetUrls((url) => url)}
+        assetUrls={getAssetUrlsByMetaUrl((url) => url)}
         onMount={handleMount}
         overrides={{
           helpMenu(_editor, schema) {

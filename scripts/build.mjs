@@ -4,6 +4,7 @@ import * as esbuild from "esbuild";
 import { cp, readFileSync, rm } from "fs";
 import { dirname } from "path";
 import typescript from "typescript";
+import metaUrlPlugin from "@chialab/esbuild-plugin-meta-url";
 
 const mode = process.env["NODE_ENV"] ?? "development";
 const isDev = mode === "development";
@@ -90,6 +91,7 @@ const buildApp = async () => {
     loader: {
       ".woff2": "file",
     },
+    plugins: [metaUrlPlugin()],
   });
 };
 
