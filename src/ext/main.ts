@@ -35,6 +35,8 @@ class InstancesManager {
 
     this.creationLocked = true;
 
+    const isDarkMode = await ext.windows.getPlatformDarkMode();
+
     const availableSpot = findFirstEmptySpot(this.instances);
     const tab = await ext.tabs.create({
       index: availableSpot,
@@ -47,7 +49,7 @@ class InstancesManager {
       darkMode: "platform",
       fullscreenable: true,
       title: `TLDraw - #${availableSpot + 1}`,
-      icon: "./assets/128.png",
+      icon: isDarkMode ? "./assets/128.png" : "./assets/128-dark.png",
       vibrancy: false,
     });
     const contentSize = await ext.windows.getContentSize(window.id);
@@ -116,4 +118,13 @@ ext.tabs.onClickedClose.addListener(async (event) => {
 
 ext.windows.onClosed.addListener(async (event) => {
   await instanceManager.destroy({ windowId: event.id });
+});
+
+ext.windows.onUpdatedDarkMode.addListener(async (event, details) => {
+  await ext.windows.update(event.id, {
+    icon:
+      details.enabled && details.platform
+        ? "./assets/128.png"
+        : "./assets/128-dark.png",
+  });
 });
