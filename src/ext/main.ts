@@ -46,7 +46,7 @@ class InstancesManager {
     });
     const window = await ext.windows.create({
       center: true,
-      darkMode: "platform",
+      darkMode: isDarkMode,
       fullscreenable: true,
       title: `TLDraw - #${availableSpot + 1}`,
       icon: isDarkMode ? "./assets/128.png" : "./assets/128-dark.png",
