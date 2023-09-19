@@ -47,9 +47,10 @@ class InstancesManager {
       darkMode: "platform",
       fullscreenable: true,
       title: `TLDraw - #${availableSpot + 1}`,
-      icon: "./assets/128.dark",
+      icon: "./assets/128.png",
+      vibrancy: false,
     });
-    const windowSize = await ext.windows.getBounds(window.id);
+    const contentSize = await ext.windows.getContentSize(window.id);
     const websession = await ext.websessions.create({
       partition: `TLDraw - #${availableSpot + 1}`,
       cache: true,
@@ -60,16 +61,7 @@ class InstancesManager {
       window,
       websession,
       autoResize: { horizontal: true, vertical: true },
-      bounds: { ...windowSize, x: 0, y: 0 },
-    });
-
-    // Fixes webview overflow caused by frame height taking space (probably a bug)
-    const bounds = await ext.webviews.getBounds(webview.id);
-
-    await ext.webviews.setBounds(webview.id, {
-      ...bounds,
-      y: 0,
-      height: bounds.height - bounds.y,
+      bounds: { ...contentSize, x: 0, y: 0 },
     });
 
     await ext.webviews.loadFile(webview.id, "index.html");
